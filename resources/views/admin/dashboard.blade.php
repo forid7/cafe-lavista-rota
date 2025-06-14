@@ -10,21 +10,26 @@
         .rota-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem 0;
+            padding: 1.5rem 0;
         }
         
         .week-navigation {
             background-color: #f8f9fa;
             padding: 1rem;
             border-radius: 8px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .rota-table {
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .rota-table table {
+            min-width: 800px;
         }
         
         .rota-table th {
@@ -32,12 +37,13 @@
             color: white;
             font-weight: 600;
             text-align: center;
-            padding: 1rem;
+            padding: 0.75rem;
             border: none;
+            white-space: nowrap;
         }
         
         .rota-table td {
-            padding: 0.75rem;
+            padding: 0.5rem;
             text-align: center;
             vertical-align: middle;
             border-color: #e9ecef;
@@ -49,6 +55,9 @@
             font-weight: 600;
             text-align: left !important;
             padding-left: 1rem !important;
+            position: sticky;
+            left: 0;
+            z-index: 1;
         }
         
         .shift-morning {
@@ -92,22 +101,101 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
+            padding: 1rem;
             margin-bottom: 1rem;
         }
         
         .stats-icon {
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
-        
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .rota-table {
-                font-size: 0.8rem;
+            .rota-header {
+                padding: 1rem 0;
             }
-            
-            .rota-table td, .rota-table th {
-                padding: 0.5rem 0.25rem;
+
+            .rota-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .rota-header .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .table-responsive {
+                margin-bottom: 1rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+
+            .form-control {
+                font-size: 0.875rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .stats-card {
+                padding: 0.75rem;
+            }
+
+            .stats-icon {
+                font-size: 1.25rem;
+            }
+
+            .card {
+                margin-bottom: 1rem;
+            }
+
+            .shift-badge {
+                font-size: 0.7em;
+            }
+
+            .rota-table td small {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .rota-header .btn,
+            .form-container,
+            .card {
+                display: none;
+            }
+
+            .rota-table {
+                box-shadow: none;
+            }
+
+            .rota-table th,
+            .rota-table td {
+                border: 1px solid #dee2e6;
             }
         }
     </style>
@@ -147,128 +235,168 @@
 
         
 
-        <form method="GET" action="{{ route('admin.dashboard') }}">
-            <label for="start_date">Select Week Start:</label>
-            <input type="date" name="start_date" value="{{ $start->toDateString() }}">
-            <button type="submit">View</button>
+        <form method="GET" action="{{ route('admin.dashboard') }}" class="form-container">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Select Week Start:</label>
+                    <input type="date" class="form-control" name="start_date" value="{{ $start->toDateString() }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary mt-4">View</button>
+                </div>
+            </div>
         </form>
 
         <div class="container">
-            <h2>All Employees</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($employees as $employee)
-                        <tr>
-                            <td>{{ $employee->id }}</td>
-                            <td>{{ $employee->name }}</td>
-                            {{-- <td>{{ $employee->email ?? 'N/A' }}</td> --}}
-                            <td>{{ $employee->created_at }}</td>
-                            <td>
-                            <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $employee->id }}').submit();" style="color:red;">
-                                Delete
-                            </a>
-                            
-                            <form id="delete-form-{{ $employee->id }}" action="{{ route('admin.employees.destroy', $employee->id) }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="4">No employees found.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">All Employees</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Created At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($employees as $employee)
+                                    <tr>
+                                        <td>{{ $employee->id }}</td>
+                                        <td>{{ $employee->name }}</td>
+                                        <td>{{ $employee->created_at }}</td>
+                                        <td>
+                                            <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $employee->id }}').submit();" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                            
+                                            <form id="delete-form-{{ $employee->id }}" action="{{ route('admin.employees.destroy', $employee->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="4" class="text-center">No employees found.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <br>
-
-        <h2>Add new employee</h2>
-
-        <form method="POST" action="{{ route('admin.employees.store') }}">
-            @csrf
-            <input type="text" name="name" placeholder="Employee Name" required>
-            <button type="submit">Add Employee</button>
-        </form>
-        <br>
-
-        <div class="container">
-            <h2>All Shifts Categories</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Shift-category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($shifts as $shift)
-                        <tr>
-                            <td>{{ $shift->id }}</td>
-                            <td>{{ $shift->name }}</td>
-                            <td>{{ $shift->start_time }}</td>
-                            <td>{{ $shift->end_time }}</td>
-                            <td>{{ $shift->css_class }}</td>
-                            {{-- <td>
-                            <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $employee->id }}').submit();" style="color:red;">
-                                Delete
-                            </a>
-                            
-                            <form id="delete-form-{{ $employee->id }}" action="{{ route('admin.employees.destroy', $employee->id) }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </td> --}}
-                        </tr>
-                    @empty
-                        <tr><td colspan="4">No shifts found.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">Add New Employee</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.employees.store') }}" class="row g-3">
+                    @csrf
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="name" placeholder="Employee Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">Add Employee</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <h2>Add new Shift Category</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">All Shifts Categories</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Shift-category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($shifts as $shift)
+                                <tr>
+                                    <td>{{ $shift->id }}</td>
+                                    <td>{{ $shift->name }}</td>
+                                    <td>{{ $shift->start_time }}</td>
+                                    <td>{{ $shift->end_time }}</td>
+                                    <td>{{ $shift->css_class }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="5" class="text-center">No shifts found.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <form method="POST" action="{{ route('admin.shifts.store') }}">
-            @csrf
-            <input type="text" name="name" placeholder="Shift Name" required>
-            <input type="text" name="start_time" placeholder="Start Time (e.g. 09:00)">
-            <input type="text" name="end_time" placeholder="End Time (e.g. 17:00)">
-            <input type="text" name="css_class" placeholder="CSS Class (e.g. shift-morning)">
-            <button type="submit">Add Shift</button>
-        </form>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">Add New Shift Category</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.shifts.store') }}" class="row g-3">
+                    @csrf
+                    <div class="col-md-6 col-lg-3">
+                        <input type="text" class="form-control" name="name" placeholder="Shift Name" required>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <input type="text" class="form-control" name="start_time" placeholder="Start Time (e.g. 09:00)">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <input type="text" class="form-control" name="end_time" placeholder="End Time (e.g. 17:00)">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <input type="text" class="form-control" name="css_class" placeholder="CSS Class (e.g. shift-morning)">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Add Shift</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-        <br>
-
-        <h2>Assign New Shift</h2>
-<form method="POST" action="{{ route('admin.schedules.store') }}">
-    @csrf
-    <select name="employee_id">
-        @foreach($employees as $employee)
-            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-        @endforeach
-    </select>
-    <select name="shift_id">
-        @foreach($shifts as $shift)
-            <option value="{{ $shift->id }}">{{ $shift->name }}</option>
-        @endforeach
-    </select>
-    <input type="date" name="work_date">
-    <button type="submit">Assign Shift</button>
-</form>
-
-<br>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">Assign New Shift</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.schedules.store') }}" class="row g-3">
+                    @csrf
+                    <div class="col-md-4">
+                        <select name="employee_id" class="form-select">
+                            @foreach($employees as $employee)
+                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="shift_id" class="form-select">
+                            @foreach($shifts as $shift)
+                                <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" name="work_date" class="form-control">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Assign Shift</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Statistics Cards -->
         {{-- <div class="row mb-4">
