@@ -1,0 +1,15 @@
+---
+deployment:
+  tasks:
+    - echo "Running Composer..."
+    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+
+    - echo "Generating Laravel APP_KEY (if not exists)..."
+    - php artisan key:generate --force
+
+    - echo "Caching config, routes, and views..."
+    - php artisan config:cache
+    - php artisan route:cache
+    - php artisan view:cache
+
+    - echo "Deployment complete ✅"
