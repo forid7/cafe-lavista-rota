@@ -136,23 +136,26 @@
             .rota-header .btn {
                 padding: 0.375rem 0.75rem;
                 font-size: 0.875rem;
+                margin-bottom: 0.5rem;
             }
 
             .container {
-                padding-left: 15px;
-                padding-right: 15px;
+                padding-left: 10px;
+                padding-right: 10px;
             }
 
             .table-responsive {
                 margin-bottom: 1rem;
+                border: 0;
             }
 
             .form-container {
                 padding: 1rem;
             }
 
-            .form-control {
+            .form-control, .form-select {
                 font-size: 0.875rem;
+                margin-bottom: 0.5rem;
             }
 
             .btn {
@@ -162,6 +165,7 @@
 
             .stats-card {
                 padding: 0.75rem;
+                margin-bottom: 0.75rem;
             }
 
             .stats-icon {
@@ -174,10 +178,105 @@
 
             .shift-badge {
                 font-size: 0.7em;
+                padding: 0.2em 0.4em;
             }
 
             .rota-table td small {
                 font-size: 0.7em;
+            }
+
+            .rota-table th {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+
+            .rota-table td {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+            }
+
+            .employee-name {
+                font-size: 0.9rem;
+                padding: 0.4rem !important;
+            }
+
+            .card-header {
+                padding: 0.75rem;
+            }
+
+            .card-header h5 {
+                font-size: 1rem;
+            }
+
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .list-unstyled li {
+                font-size: 0.875rem;
+            }
+
+            /* Stack buttons in header */
+            .rota-header .text-md-end {
+                text-align: left !important;
+                margin-top: 1rem;
+            }
+
+            /* Adjust form layouts */
+            .row.g-3 {
+                margin-right: -5px;
+                margin-left: -5px;
+            }
+
+            .row.g-3 > [class*="col-"] {
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+
+            /* Make tables more compact */
+            .table {
+                margin-bottom: 0;
+            }
+
+            .table td, .table th {
+                padding: 0.5rem;
+            }
+
+            /* Adjust legend spacing */
+            .shift-legend .col-md-3 {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Additional breakpoint for very small devices */
+        @media (max-width: 576px) {
+            .rota-header h1 {
+                font-size: 1.25rem;
+            }
+
+            .rota-header p {
+                font-size: 0.875rem;
+            }
+
+            .form-label {
+                font-size: 0.875rem;
+            }
+
+            .card-header h2 {
+                font-size: 1rem;
+            }
+
+            .table td, .table th {
+                padding: 0.375rem;
+                font-size: 0.75rem;
+            }
+
+            .shift-badge {
+                font-size: 0.65em;
+            }
+
+            .employee-name {
+                font-size: 0.8rem;
             }
         }
 

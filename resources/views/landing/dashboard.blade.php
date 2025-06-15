@@ -24,7 +24,8 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .rota-table th {
@@ -34,6 +35,7 @@
             text-align: center;
             padding: 1rem;
             border: none;
+            white-space: nowrap;
         }
         
         .rota-table td {
@@ -41,6 +43,7 @@
             text-align: center;
             vertical-align: middle;
             border-color: #e9ecef;
+            white-space: nowrap;
         }
         
         .employee-name {
@@ -49,6 +52,9 @@
             font-weight: 600;
             text-align: left !important;
             padding-left: 1rem !important;
+            position: sticky;
+            left: 0;
+            z-index: 1;
         }
         
         .shift-morning {
@@ -100,14 +106,120 @@
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
-        
+
+        /* Enhanced Mobile Responsiveness */
         @media (max-width: 768px) {
+            .rota-header {
+                padding: 1rem 0;
+            }
+
+            .rota-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .rota-header .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .week-navigation {
+                padding: 0.75rem;
+            }
+
+            .week-navigation .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .week-navigation h4 {
+                font-size: 1rem;
+                margin: 0.5rem 0;
+            }
+
+            .stats-card {
+                padding: 1rem;
+            }
+
+            .stats-card h5 {
+                font-size: 0.875rem;
+            }
+
+            .stats-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .stats-icon {
+                font-size: 1.5rem;
+            }
+
             .rota-table {
                 font-size: 0.8rem;
             }
-            
+
             .rota-table td, .rota-table th {
                 padding: 0.5rem 0.25rem;
+            }
+
+            .shift-badge {
+                font-size: 0.7em;
+                padding: 0.2em 0.4em;
+            }
+
+            .card-header h5 {
+                font-size: 1rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .card-body li {
+                font-size: 0.875rem;
+            }
+
+            /* Make the date selector form more mobile friendly */
+            form {
+                margin-bottom: 1rem;
+            }
+
+            form label {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            form input[type="date"] {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            form button {
+                width: 100%;
+            }
+        }
+
+        /* Additional breakpoint for very small devices */
+        @media (max-width: 480px) {
+            .rota-header .col-md-6 {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+            .rota-header .text-md-end {
+                text-align: center !important;
+            }
+
+            .stats-card {
+                margin-bottom: 0.5rem;
+            }
+
+            .rota-table {
+                font-size: 0.7rem;
+            }
+
+            .shift-badge {
+                font-size: 0.65em;
             }
         }
     </style>
