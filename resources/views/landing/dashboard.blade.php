@@ -230,7 +230,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1><a style="color: white" href="{{ route('landing') }}">Weekly Rotassss</a></h1>
+                    <h1><a style="color: white" href="{{ route('landing') }}">Weekly Rota</a></h1>
                     <p class="mb-0 opacity-75">Staff Schedule Management</p>
                 </div>
                 <div class="col-md-6 text-md-end">
